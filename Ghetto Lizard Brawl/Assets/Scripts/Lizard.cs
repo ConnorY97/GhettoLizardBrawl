@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 /// <summary>
 /// Description:    Contains all the functionality of a lizard. Not responsible for any decision making.
 /// Requirements:   N/A
