@@ -2,11 +2,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
+/// <summary>
+/// Description:    Contains all the functionality of a lizard. Not responsible for any decision making.
+/// Requirements:   N/A
+/// Author:         Reyhan Rishard, Connor Young
+/// Date created:   04/05/20
+/// Date modified:  04/05/20
+/// </summary>
+
+[RequireComponent(typeof(Rigidbody))]
 public class Lizard : MonoBehaviour
 {
+    public delegate void LizardEventHandler(Lizard lizard);
+    public static event LizardEventHandler OnLizardKnockout;
+
+    public float MaxSpeed => _maxSpeed;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _timeToMaxSpeed; // How long it takes to reach max speed.
-    [SerializeField] private float _timeToStop; // How long it takes to come to a full stop.
     
     private Rigidbody _rb;
 
@@ -28,8 +41,14 @@ public class Lizard : MonoBehaviour
 
     }
 
-    private void Knockback(Vector3 force)
+    public void Knockback(Vector3 force)
     {
 
+    }
+
+    private void Knockout()
+    {
+        if (OnLizardKnockout != null)
+            OnLizardKnockout(this);
     }
 }
