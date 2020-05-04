@@ -33,6 +33,6 @@ public class AIController : MonoBehaviour
 
 	public void Update()
 	{
-		_ai.SetDestination(target.position);
+		//_ai.SetDestination(target.position);
 	}
 }
