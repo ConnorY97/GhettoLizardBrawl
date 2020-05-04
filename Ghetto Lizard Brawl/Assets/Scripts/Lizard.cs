@@ -10,6 +10,7 @@ using UnityEngine;
 /// Date modified:  04/05/20
 /// </summary>
 
+[RequireComponent(typeof(Rigidbody))]
 public class Lizard : MonoBehaviour
 {
     public float MaxSpeed => _maxSpeed;
