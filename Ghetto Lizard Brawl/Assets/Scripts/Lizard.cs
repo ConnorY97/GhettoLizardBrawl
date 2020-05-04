@@ -13,6 +13,9 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Lizard : MonoBehaviour
 {
+    public delegate void LizardEventHandler(Lizard lizard);
+    public static event LizardEventHandler OnLizardKnockout;
+
     public float MaxSpeed => _maxSpeed;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _timeToMaxSpeed; // How long it takes to reach max speed.
@@ -34,11 +37,17 @@ public class Lizard : MonoBehaviour
 
     public void Attack()
     {
-        
+
     }
 
     public void Knockback(Vector3 force)
     {
 
+    }
+
+    private void Knockout()
+    {
+        if (OnLizardKnockout != null)
+            OnLizardKnockout(this);
     }
 }
