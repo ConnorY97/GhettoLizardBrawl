@@ -24,14 +24,18 @@ enum State
 
 public class AIController : MonoBehaviour
 {
-	private NavMeshAgent _ai = null;
-	
+	private NavMeshAgent _ai = null;	
 	private Lizard _src = null;
-
 	private GameManager _gameManager = null;
 
-	[SerializeField]
-	private List<float> _distances; 
+	private float _targetTimer = 0.0f;
+	private float _targetDistance; 
+	
+	//Inspector Variables-----------------------------
+	public float targetRange;
+	public float unexpectedRange; 
+
+
 
 
 
