@@ -8,19 +8,11 @@ using UnityEngine;
 
 public class AIController : MonoBehaviour
 {
-    //This AI will use navmesh to find and move towards other controllers
-    //  Colliders will be used to determin if it is in range to attack or not 
-    //  Improvements that can me made are field of view for attack 
-
-    // Start is called before the first frame update
-    void Start()
+    // This AI will use navmesh to find and move towards other controllers
+    // Colliders will be used to determin if it is in range to attack or not 
+    // Improvements that can me made are field of view for attack 
+    public void Update()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Compute AI logic.
     }
 }
