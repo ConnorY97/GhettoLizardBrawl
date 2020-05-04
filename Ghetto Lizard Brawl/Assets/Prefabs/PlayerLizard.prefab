@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 7438224337014146194}
   - component: {fileID: 7438224337014146195}
   m_Layer: 0
-  m_Name: Lizard
-  m_TagString: Untagged
+  m_Name: PlayerLizard
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -12,21 +12,25 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 	[SerializeField]
-	private List<Lizard> _allLizards;
+	private List<Lizard> _aiList;
+	[SerializeField]
+	private Lizard _player; 
 
 	public List<Transform> spawnPoints;
 
-	public Object aiControlledLizard;
-	public Object playerControlledLizard; 
+	public Lizard aiControlledLizard;
+	public Lizard playerControlledLizard; 
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		for (int i = 0; i <= 3; i++)
 		{
-			Instantiate(aiControlledLizard, spawnPoints[i]); 
+			Lizard aiTemp = Instantiate(aiControlledLizard, spawnPoints[i].position, Quaternion.identity);
+			_aiList.Add(aiTemp); 
 		}
-		Instantiate(playerControlledLizard, spawnPoints[4]); 
+
+		_player = Instantiate(playerControlledLizard, spawnPoints[4].position, Quaternion.identity); 
 	}
 
 	// Update is called once per frame
