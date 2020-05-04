@@ -420,7 +420,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1432683271}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f830b8aa3753e184f83b915722066cdf, type: 3}
+  m_Script: {fileID: 11500000, guid: d166593c09d1027408d9dc004124d947, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _forwardAxis: Vertical
@@ -438,7 +438,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc9a3e5b2527e8841b4777a7c41617df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _accelerationConstant: 2
+  _maxSpeed: 0
+  _timeToMaxSpeed: 0
 --- !u!54 &1432683274
 Rigidbody:
   m_ObjectHideFlags: 0
