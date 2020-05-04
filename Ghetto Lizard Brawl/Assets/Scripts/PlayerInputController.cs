@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Class Description: Recives input from the player 
-///     Uses that input to control the Lizard class attached to the object 
-/// Requirements: Lizard
+/// Description:	Recieves input from the player to then control the lizard
+/// Requirements:	Lizard
+/// Author:			Reyhan Rishard, Connor Young
+/// Date created:	04/05/20
+/// Date modified:	04/05/20
 /// </summary>
 
 [RequireComponent(typeof(Lizard))]
