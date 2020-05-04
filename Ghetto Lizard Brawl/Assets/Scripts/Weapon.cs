@@ -11,13 +11,30 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] private float _knockbackForce;
-    [SerializeField] private Hitbox[] _hitboxes;
+    [SerializeField] private Hitbox _hitbox;
+
+    public void Initialise(string ownerTag)
+    {
+        _hitbox.Initialise(ownerTag);
+    }
+
+    private void OnEnable()
+    {
+        _hitbox.OnHitboxEnter += OnHitboxEnter;
+    }
+
+    private void OnDisable()
+    {
+        _hitbox.OnHitboxEnter -= OnHitboxEnter;
+    }
 
     public void ToggleHitbox(bool state)
     {
-        for (int i = 0; i < _hitboxes.Length; i++)
-        {
-            
-        }
+        _hitbox.ToggleTriggers(state);
+    }
+
+    private void OnHitboxEnter(Lizard other)
+    {
+        other.Knockback(Vector3.right * _knockbackForce);
     }
 }

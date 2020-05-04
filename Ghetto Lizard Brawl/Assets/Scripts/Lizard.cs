@@ -37,7 +37,7 @@ public class Lizard : MonoBehaviour
         
     }
 
-    private void Knockback(Vector3 force)
+    public void Knockback(Vector3 force)
     {
 
     }
