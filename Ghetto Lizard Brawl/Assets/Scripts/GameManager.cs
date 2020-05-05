@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using TMPro;
 
 /// <summary>
 /// Description:	Tracks all lizards in the arena and differentiates between AI and player controlled lizards.
@@ -27,11 +29,19 @@ public class GameManager : MonoBehaviour
 
 	private Lizard[] teams;
 
-	[SerializeField] private int _playerLives;
+	private int _aiKnockouts = 0;
+	[SerializeField] private int _playerLives = 3;
+
+	[SerializeField] private GameObject _gameoverPanel;
+	[SerializeField] private TMP_Text _gameoverTextMeshPro;
+	[SerializeField] private string _gameoverSuffix;
+	[SerializeField] private string _gameoverPrefix;
+
 
 	// Start is called before the first frame update
 	void Start()
 	{
+		_gameoverPanel.SetActive(false);
 		teams = new Lizard[aiControlledLizards.Length];
 		//Adding AI lizards to their own list 
 		for (int i = 0; i < aiControlledLizards.Length; i++)
@@ -44,7 +54,7 @@ public class GameManager : MonoBehaviour
 		}
 		
 		//_player = Instantiate(playerControlledLizard, spawnPoints[4].position + Vector3.up * (playerControlledLizard.transform.localScale.y), Quaternion.identity);
-		_player = SpawnLizard(playerControlledLizard, playerSpawnPoint.position + Vector3.up * playerControlledLizard.transform.localScale.y, false);
+		_player = SpawnLizard(playerControlledLizard, playerSpawnPoint.position, false);
 		//completeList.Add(_player); 
 	}
 
@@ -79,8 +89,22 @@ public class GameManager : MonoBehaviour
 
 		completeList.Remove(lizard);
 
-		if (!isPlayer)
+		if (isPlayer)
+		{
+			_playerLives--;
+
+			if (_playerLives == 0)
+			{
+				// CONNOR SHOW GAMEOVER SCREEN HERE AND DISPLAY _aiKnockouts on it.
+				Debug.Log("GAME OVERR!");
+				Gameover();
+			}
+		}
+		else
+		{
+			_aiKnockouts++;
 			_aiList.Remove(lizard);
+		}
 
 		Destroy(lizard.gameObject);
 
@@ -108,7 +132,6 @@ public class GameManager : MonoBehaviour
 
 		if (!isAI)
 		{
-			_playerLives--;
 			_player = SpawnLizard(lizard, position, false);
 		}
 		else
@@ -116,5 +139,12 @@ public class GameManager : MonoBehaviour
 			Lizard temp = SpawnLizard(lizard, position, true);
 			teams[team] = temp;
 		}
+	}
+
+	void Gameover()
+	{
+		Time.timeScale = 0f;
+		_gameoverTextMeshPro.text = $"{_gameoverSuffix} {_aiKnockouts} {_gameoverPrefix}";
+		_gameoverPanel.SetActive(true);
 	}
 }

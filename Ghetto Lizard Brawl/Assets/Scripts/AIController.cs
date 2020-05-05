@@ -44,6 +44,10 @@ public class AIController : MonoBehaviour
 	private Lizard _targetLizard;
 	public float attackRange = 0.05f; 
 
+	[SerializeField] private KnockbackData _targetedKnockbackData;
+	[SerializeField] private KnockbackData _targetlessKnockbackData;
+
+	[SerializeField] private Hitbox _hitbox;
 
 	public void Start()
 	{
@@ -51,6 +55,18 @@ public class AIController : MonoBehaviour
 		_src = GetComponent<Lizard>();
 		_gameManager = FindObjectOfType<GameManager>();
 		_currentState = State.CHOOSETARGET;
+		_hitbox.Initialise(_src);
+		_hitbox.ToggleTriggers(true);
+	}
+
+	private void OnEnable()
+	{
+		_hitbox.OnHitboxEnter += OnHitboxEnter;
+	}
+
+	private void OnDisable()
+	{
+		_hitbox.OnHitboxEnter -= OnHitboxEnter;
 	}
 
 	public void Update()
@@ -82,7 +98,7 @@ public class AIController : MonoBehaviour
 		{
 			case State.IDLE:
 			_src.Stop();
-			
+
 			_targetLizard = FindRandomLizard();
 
 			if (_targetLizard != null)
@@ -128,7 +144,7 @@ public class AIController : MonoBehaviour
 					_currentState = State.MOVINGTOTARGET;
 				break;
 			case State.ATTACKING:
-				_targetLizard.Knockback(_facing);
+				_targetLizard.Knockback(_facing, _targetedKnockbackData);
 				_currentState = State.CHOOSETARGET;
 				break;
 			default:
@@ -149,6 +165,12 @@ public class AIController : MonoBehaviour
 		//Creates a list of lizards excluding the one this script is attached to 
 		Lizard temp = _gameManager.completeList.Where(ai => ai != _src).ToList()[randomIndex];
 		return temp; 
+	}
+
+	private void OnHitboxEnter(Lizard other)
+	{
+		Vector3 direction = (other.transform.position - transform.position).normalized;
+		other.Knockback(direction, _targetlessKnockbackData);
 	}
 }
 
