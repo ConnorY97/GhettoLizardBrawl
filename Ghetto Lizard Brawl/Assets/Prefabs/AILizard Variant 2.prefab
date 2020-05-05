@@ -67,6 +67,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AILizard Variant 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3148650492343447640, guid: 596c231f5e17db2478644ada8338217f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 59169821260731648b3a8b64fd440311, type: 2}
     - target: {fileID: 3479226384923016029, guid: 596c231f5e17db2478644ada8338217f,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

@@ -6,6 +6,6 @@ public class Circle : MonoBehaviour
 {
     private void OnTriggerExit(Collider other)
     {
-        other.GetComponent<Lizard>().Knockout();
+        other.GetComponentInParent<Lizard>().Knockout();
     }
 }
