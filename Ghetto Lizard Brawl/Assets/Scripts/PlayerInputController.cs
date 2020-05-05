@@ -59,10 +59,4 @@ public class PlayerInputController : MonoBehaviour
         return mouseRay.origin + mouseRay.direction * d;
     }
 
-	private void OnDrawGizmos()
-	{
-		Gizmos.color = Color.green;
-		Gizmos.DrawRay(_src.transform.position, _facing);
-		Gizmos.DrawSphere(_mousePosition, 2.0f);
-	}
 }
