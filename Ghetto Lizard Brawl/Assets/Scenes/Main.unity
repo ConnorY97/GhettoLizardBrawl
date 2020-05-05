@@ -6765,10 +6765,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81d95b17b8a770e44921b4ca0652d745, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _slashesVolume: 0
   _coinsVolume: 0.65
-  _cheersVolume: 0.2
+  _cheersVolume: 0.1
   _selectionVolume: 0
   _src: {fileID: 1011715529}
+  _slashes:
+  - {fileID: 8300000, guid: f5ef26e456efb944588e31dfb359b374, type: 3}
+  - {fileID: 8300000, guid: 95b2c99842546b242a7fc6870c422e79, type: 3}
+  - {fileID: 8300000, guid: 2b693a1531e376d4491c8194a1bdabce, type: 3}
+  - {fileID: 8300000, guid: f2162e450f7487349ac657345d99d29e, type: 3}
+  - {fileID: 8300000, guid: e28e24cd5d601554e958545d2fba70a5, type: 3}
   _coins:
   - {fileID: 8300000, guid: 403a82608b1ec6d4497febed53979db7, type: 3}
   - {fileID: 8300000, guid: a4efd937587781145bf6e901b0ea4979, type: 3}
