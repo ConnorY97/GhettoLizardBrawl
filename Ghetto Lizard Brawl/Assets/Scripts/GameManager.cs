@@ -19,26 +19,33 @@ public class GameManager : MonoBehaviour
 	[Header("Lizard list")]
 	public List<Lizard> completeList;
 	[Header("Spawn points")]
-	public List<Transform> spawnPoints;
+	public List<Transform> aiSpawnPoints;
+	public Transform playerSpawnPoint;
 	[Header("Prefabs")]
-	public Lizard aiControlledLizard;
+	public Lizard[] aiControlledLizards;
 	public Lizard playerControlledLizard; 
+
+	private Lizard[] teams;
+
+	[SerializeField] private int _playerLives;
 
 	// Start is called before the first frame update
 	void Start()
 	{
+		teams = new Lizard[aiControlledLizards.Length];
 		//Adding AI lizards to their own list 
-		for (int i = 0; i <= 3; i++)
+		for (int i = 0; i < aiControlledLizards.Length; i++)
 		{
-			Lizard aiTemp = Instantiate(aiControlledLizard, spawnPoints[i].position, Quaternion.identity);
-			_aiList.Add(aiTemp); 
+			//Lizard aiTemp = Instantiate(aiControlledLizards[i], spawnPoints[i].position, Quaternion.identity);
+			//_aiList.Add(aiTemp);
+			//completeList.Add(aiTemp); 
+
+			teams[i] = SpawnLizard(aiControlledLizards[i], aiSpawnPoints[i].position, true);
 		}
 		
-		_player = Instantiate(playerControlledLizard, spawnPoints[4].position + Vector3.up * (playerControlledLizard.transform.localScale.y / 2.0f), Quaternion.identity);
-
-		//Then adding all Lizards to a complete list 
-		completeList = new List<Lizard>(_aiList);
-		completeList.Add(_player); 
+		//_player = Instantiate(playerControlledLizard, spawnPoints[4].position + Vector3.up * (playerControlledLizard.transform.localScale.y), Quaternion.identity);
+		_player = SpawnLizard(playerControlledLizard, playerSpawnPoint.position + Vector3.up * playerControlledLizard.transform.localScale.y, false);
+		//completeList.Add(_player); 
 	}
 
 	void OnEnable()
@@ -51,9 +58,63 @@ public class GameManager : MonoBehaviour
 		Lizard.OnLizardKnockout -= OnKnockout;
 	}
 
+	Lizard SpawnLizard(Lizard lizard, Vector3 position, bool ai)
+	{
+		Lizard temp = Instantiate(lizard, position, Quaternion.identity);
+		
+		if (ai)
+			_aiList.Add(temp);
+		else
+			_player = temp;
+
+		completeList.Add(temp);
+
+		return temp;
+	}
+
 	void OnKnockout(Lizard lizard)
 	{
+		int team = GetTeam(lizard);
+		bool isPlayer = lizard == _player;
+
 		completeList.Remove(lizard);
-		lizard.gameObject.SetActive(false);
+
+		if (!isPlayer)
+			_aiList.Remove(lizard);
+
+		Destroy(lizard.gameObject);
+
+		if (!isPlayer)
+			StartCoroutine(SpawnCo(aiControlledLizards[team], aiSpawnPoints[team].position, true, team));
+		else
+			StartCoroutine(SpawnCo(playerControlledLizard, playerSpawnPoint.position, false, -1));	
+	}
+
+	int GetTeam(Lizard lizard)
+	{
+		for (int i = 0; i < teams.Length; i++)
+		{
+			if (teams[i] == lizard)
+				return i;
+		}
+
+		Debug.Log(lizard.name);
+		return -1;
+	}
+
+	IEnumerator SpawnCo(Lizard lizard, Vector3 position, bool isAI, int team)
+	{
+		yield return new WaitForSecondsRealtime(1.0f);
+
+		if (!isAI)
+		{
+			_playerLives--;
+			_player = SpawnLizard(lizard, position, false);
+		}
+		else
+		{
+			Lizard temp = SpawnLizard(lizard, position, true);
+			teams[team] = temp;
+		}
 	}
 }

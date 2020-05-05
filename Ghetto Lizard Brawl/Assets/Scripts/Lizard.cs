@@ -57,6 +57,11 @@ public class Lizard : MonoBehaviour
         _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _maxSpeed);
     }
 
+    public void Stop()
+    {
+        _rb.velocity = Vector3.zero;
+    }
+
     public void BeginAttack()
     {
         if (_weapon != null)

@@ -19,7 +19,7 @@ public class Hitbox : MonoBehaviour
         if (OnHitboxEnter != null)
         {
             if (!other.CompareTag(_ownerTag))
-                OnHitboxEnter(other.GetComponent<Lizard>());
+                OnHitboxEnter(other.GetComponentInParent<Lizard>());
         }
     }
 
