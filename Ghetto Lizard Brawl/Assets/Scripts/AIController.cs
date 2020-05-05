@@ -37,10 +37,6 @@ public class AIController : MonoBehaviour
 
 	//Inspector Variables-----------------------------
 	public float chaseRadius;
-	//[SerializeField]
-	//private GameObject _visualChaseRadius;
-	//[SerializeField]
-	//private GameObject _visualSurpriseRadius;
 	[SerializeField]
 	private State _currentState;
 	[SerializeField]
@@ -54,8 +50,6 @@ public class AIController : MonoBehaviour
 		_src = GetComponent<Lizard>();
 		_gameManager = FindObjectOfType<GameManager>();
 		_currentState = State.CHOOSETARGET;
-		//_visualChaseRadius.transform.localScale = new Vector2(chaseRadius, chaseRadius);
-		//_visualSurpriseRadius.transform.localScale = new Vector2(chaseRadius * 0.5f, chaseRadius * 0.5f);
 	}
 
 	public void Update()
