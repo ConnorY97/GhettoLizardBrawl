@@ -46,30 +46,35 @@ public class AIController : MonoBehaviour
 
 	public void Start()
 	{
+		//Assigning variables
 		_ai = GetComponent<NavMeshAgent>();
 		_src = GetComponent<Lizard>();
 		_gameManager = FindObjectOfType<GameManager>();
 		_currentState = State.CHOOSETARGET;
-
 		_visualChaseRadius.transform.localScale = new Vector2(chaseRadius, chaseRadius);
 		_visualSurpriseRadius.transform.localScale = new Vector2(chaseRadius * 0.5f, chaseRadius * 0.5f);
 	}
 
 	public void Update()
 	{
+		//If the target it outside the chase radius then the timer will increase 
 		if (_targetDistance > chaseRadius)
 		{
 			_searchTimer += Time.deltaTime; 
 		}
 
+		//State machine for the AI 
 		switch (_currentState)
 		{
+			//Moving towards the AI target 
 			case State.MOVINGTOTARGET:				
 				_ai.SetDestination(_targetLizard.transform.position);
+				//If the timer exceeds 4 seconds the AI will change target
 				if (_searchTimer > 4.0f)
 				{
 					_currentState = State.CHOOSETARGET;
 				}
+				//When a lizard passes by close enough 60% of the time it will become the new target 
 				foreach (Lizard currentLizard in _gameManager.completeList)
 				{
 					if (_src != currentLizard && currentLizard != _targetLizard)
@@ -87,7 +92,8 @@ public class AIController : MonoBehaviour
 					}
 				}
 				break;
-			case State.CHOOSETARGET:				
+			//Choosing a random target for the AI
+			case State.CHOOSETARGET:
 				_targetLizard = FindRandomLizard();
 				_searchTimer = 0.0f;
 				_currentState = State.MOVINGTOTARGET;
@@ -97,10 +103,14 @@ public class AIController : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Returns a random lizard in the scene excluding itself 
+	/// </summary>
+	/// <returns></returns>
 	Lizard FindRandomLizard()
-	{
+	{		
 		int randomIndex = Random.Range(0, 3);
-
+		//Creates a list of lizards excluding the one this script is attached to 
 		Lizard temp = _gameManager.completeList.Where(ai => ai != _src).ToList()[randomIndex];
 		return temp; 
 	}
