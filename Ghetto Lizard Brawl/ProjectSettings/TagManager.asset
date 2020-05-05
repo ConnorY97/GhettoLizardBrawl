@@ -42,3 +42,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Environment
+    uniqueID: 3181403883
+    locked: 0
+  - name: Lizard
+    uniqueID: 1272145165
+    locked: 0
