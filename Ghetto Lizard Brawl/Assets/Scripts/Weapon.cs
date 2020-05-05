@@ -12,10 +12,12 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] private float _knockbackForce;
     [SerializeField] private Hitbox _hitbox;
+    private Vector3 _direction;
 
     public void Initialise(string ownerTag)
     {
         _hitbox.Initialise(ownerTag);
+        ToggleHitbox(false);
     }
 
     private void OnEnable()
@@ -28,6 +30,11 @@ public class Weapon : MonoBehaviour
         _hitbox.OnHitboxEnter -= OnHitboxEnter;
     }
 
+    public void SetDirection(Vector3 direction)
+    {
+        _direction = direction;
+    }
+
     public void ToggleHitbox(bool state)
     {
         _hitbox.ToggleTriggers(state);
@@ -35,7 +42,7 @@ public class Weapon : MonoBehaviour
 
     private void OnHitboxEnter(Lizard other)
     {
-        other.Knockback(Vector3.right * _knockbackForce);
+        other.Knockback(_direction);
         Debug.Log(other.name);
     }
 }

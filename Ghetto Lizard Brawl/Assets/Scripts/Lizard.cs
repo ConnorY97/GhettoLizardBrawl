@@ -22,6 +22,15 @@ public class Lizard : MonoBehaviour
     [SerializeField] private float _timeToMaxSpeed; // How long it takes to reach max speed.
 
     [SerializeField] private Weapon _weapon;
+    private Vector3 _facing;
+
+    // Knockback.
+    [SerializeField] private KnockbackData _knockbackData;
+    private Vector3 _finalKnockbackPosition;
+    private Vector3 _initKnockbackPosition;
+    private bool _knockbackBuffered = false;
+    private float _knockbackTime;
+
     private Rigidbody _rb;
     private Animator _anim;
 
@@ -36,7 +45,8 @@ public class Lizard : MonoBehaviour
 
     private void Update()
     {
-        Orientate();
+        if (_knockbackBuffered)
+            LerpKnockback();
     }
 
     public void Accelerate(Vector3 direction)
@@ -52,6 +62,7 @@ public class Lizard : MonoBehaviour
         if (_weapon != null)
         {
             _anim.SetTrigger("Attack");
+            _weapon.SetDirection(_facing);
             _weapon.ToggleHitbox(true);
         }
     }
@@ -64,9 +75,25 @@ public class Lizard : MonoBehaviour
         }
     }
 
-    public void Knockback(Vector3 force)
+    private void LerpKnockback()
     {
+        float elapsedTime = Time.time - _knockbackTime;
+        float t = elapsedTime / _knockbackData.duration;
+        transform.position = Vector3.Lerp(_initKnockbackPosition, _finalKnockbackPosition, t);
 
+        if (t >= 1.0f)
+            _knockbackBuffered = false;
+    }
+
+    public void Knockback(Vector3 direction)
+    {
+        _initKnockbackPosition = transform.position;
+        _finalKnockbackPosition = _initKnockbackPosition + direction * _knockbackData.distance;
+        _knockbackTime = Time.time;
+        _knockbackBuffered = true;
+        
+        //_rb.AddForce(force, ForceMode.Impulse);
+        //gameObject.SetActive(false);
     }
 
     private void Knockout()
@@ -75,24 +102,12 @@ public class Lizard : MonoBehaviour
             OnLizardKnockout(this);
     }
 
-    private void Orientate()
+    public void Orientate(Vector3 direction)
     {
-        Vector3 mousePosition = GetMousePosition();
-        mousePosition.y = transform.position.y;
+        _facing = direction;
+        Debug.Log(_facing);
 
-        Vector3 thisToMouse = (mousePosition - transform.position).normalized;
-
-        Quaternion rot = Quaternion.LookRotation(thisToMouse, Vector3.up);
+        Quaternion rot = Quaternion.LookRotation(_facing, Vector3.up);
         transform.rotation = rot;
-    }
-
-    private Vector3 GetMousePosition()
-    {
-        Plane groundPlane = new Plane(Vector3.up, 0.0f);
-        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-        float d = 0f;
-        groundPlane.Raycast(mouseRay, out d);
-        return mouseRay.origin + mouseRay.direction * d;
     }
 }

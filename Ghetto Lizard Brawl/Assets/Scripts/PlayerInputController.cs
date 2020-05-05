@@ -20,9 +20,9 @@ public class PlayerInputController : MonoBehaviour
 	[SerializeField] private string _forwardAxis;
 	[SerializeField] private string _horizontalAxis;
 	[SerializeField] private KeyCode _attackButton;
-
-	private Vector3 bufferedMovementDirection;
-	
+	private Vector3 _bufferedMovementDirection;
+	private Vector3 _mousePosition;
+	private Vector3 _facing;
 	private Lizard _src; // Lizard being controlled by this controller.
 
 	private void Awake()
@@ -33,14 +33,36 @@ public class PlayerInputController : MonoBehaviour
 	private void Update()
 	{
 		Vector3 movementInput = new Vector3(Input.GetAxisRaw(_horizontalAxis), 0.0f, Input.GetAxisRaw(_forwardAxis));
-		bufferedMovementDirection = movementInput.normalized;
+		_bufferedMovementDirection = movementInput.normalized;
 
 		if (Input.GetKeyDown(_attackButton))
 			_src.BeginAttack();
+
+		_mousePosition = GetMousePosition();
+        _mousePosition.y = _src.transform.position.y;
+        _facing = (_mousePosition - _src.transform.position).normalized;
+		_src.Orientate(_facing);
 	}
 
 	private void FixedUpdate()
 	{
-		_src.Accelerate(bufferedMovementDirection);
+		_src.Accelerate(_bufferedMovementDirection);
+	}
+
+	private Vector3 GetMousePosition()
+    {
+        Plane groundPlane = new Plane(Vector3.up, 0.0f);
+        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        float d = 0f;
+        groundPlane.Raycast(mouseRay, out d);
+        return mouseRay.origin + mouseRay.direction * d;
+    }
+
+	private void OnDrawGizmos()
+	{
+		Gizmos.color = Color.green;
+		Gizmos.DrawRay(_src.transform.position, _facing);
+		Gizmos.DrawSphere(_mousePosition, 2.0f);
 	}
 }
