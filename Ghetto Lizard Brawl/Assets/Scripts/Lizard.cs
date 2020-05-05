@@ -105,10 +105,14 @@ public class Lizard : MonoBehaviour
         
         //_rb.AddForce(force, ForceMode.Impulse);
         //gameObject.SetActive(false);
+
+        SoundManager.instance.PlayCheersOneshot();
     }
 
     public void Knockout()
     {
+		SoundManager.instance.PlayCoinsOneshot();
+
         if (OnLizardKnockout != null)
             OnLizardKnockout(this);
     }
