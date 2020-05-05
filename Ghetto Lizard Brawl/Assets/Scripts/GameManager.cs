@@ -10,14 +10,19 @@ using UnityEngine;
 /// Date modified:	04/05/20
 /// </summary>
 public class GameManager : MonoBehaviour
-{
-	[SerializeField]
-	private List<Lizard> _aiList;
-	[SerializeField]
-	private Lizard _player; 
+{ 
+	private List<Lizard> _aiList = new List<Lizard>();
+	private Lizard _player;
 
+	//Inspector Variables--------------------------------------
+	[Header("Lizard list")]
+	[SerializeField]
+	private List<Lizard> _completeList;
+
+	[Header("Spawn points")]
 	public List<Transform> spawnPoints;
 
+	[Header("Prefabs")]
 	public Lizard aiControlledLizard;
 	public Lizard playerControlledLizard; 
 
@@ -30,7 +35,10 @@ public class GameManager : MonoBehaviour
 			_aiList.Add(aiTemp); 
 		}
 
-		_player = Instantiate(playerControlledLizard, spawnPoints[4].position, Quaternion.identity); 
+		_player = Instantiate(playerControlledLizard, spawnPoints[4].position, Quaternion.identity);
+
+		_completeList = new List<Lizard>(_aiList);
+		_completeList.Add(_player); 
 	}
 
 	// Update is called once per frame
