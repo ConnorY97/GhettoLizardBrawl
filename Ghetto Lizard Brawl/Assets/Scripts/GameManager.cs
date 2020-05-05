@@ -34,16 +34,26 @@ public class GameManager : MonoBehaviour
 			_aiList.Add(aiTemp); 
 		}
 		
-		_player = Instantiate(playerControlledLizard, spawnPoints[4].position, Quaternion.identity);
+		_player = Instantiate(playerControlledLizard, spawnPoints[4].position + Vector3.up * (playerControlledLizard.transform.localScale.y / 2.0f), Quaternion.identity);
 
 		//Then adding all Lizards to a complete list 
 		completeList = new List<Lizard>(_aiList);
 		completeList.Add(_player); 
 	}
 
-	// Update is called once per frame
-	void Update()
+	void OnEnable()
 	{
-		
+		Lizard.OnLizardKnockout += OnKnockout;
+	}
+
+	void OnDisable()
+	{
+		Lizard.OnLizardKnockout -= OnKnockout;
+	}
+
+	void OnKnockout(Lizard lizard)
+	{
+		completeList.Remove(lizard);
+		lizard.gameObject.SetActive(false);
 	}
 }
