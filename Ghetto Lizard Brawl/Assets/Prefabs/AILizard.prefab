@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 2947601300911617392}
   - component: {fileID: 1468834694441996859}
   - component: {fileID: 4959301412255071428}
-  - component: {fileID: 7322968768546521614}
   - component: {fileID: 409258811846938261}
   m_Layer: 10
   m_Name: AILizard
@@ -128,31 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc9a3e5b2527e8841b4777a7c41617df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxSpeed: 0
-  _timeToMaxSpeed: 0
+  _maxSpeed: 5
+  _timeToMaxSpeed: 2
   _weapon: {fileID: 0}
---- !u!195 &7322968768546521614
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4081161187341261110}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 1
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &409258811846938261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -237,8 +214,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -821499189
-  m_SortingLayer: 3
+  m_SortingLayerID: 1272145165
+  m_SortingLayer: 2
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 57a40d6a0f8f3424e8ce194712903c09, type: 3}
   m_Color: {r: 0, g: 1, b: 0.06020379, a: 1}
@@ -318,8 +295,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: -821499189
-  m_SortingLayer: 3
+  m_SortingLayerID: 1272145165
+  m_SortingLayer: 2
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 57a40d6a0f8f3424e8ce194712903c09, type: 3}
   m_Color: {r: 0, g: 0.099416494, b: 1, a: 1}
