@@ -87,6 +87,7 @@ public class Lizard : MonoBehaviour
 
     public void Knockback(Vector3 direction)
     {
+        direction.y = 0f;
         _initKnockbackPosition = transform.position;
         _finalKnockbackPosition = _initKnockbackPosition + direction * _knockbackData.distance;
         _knockbackTime = Time.time;
@@ -96,7 +97,7 @@ public class Lizard : MonoBehaviour
         //gameObject.SetActive(false);
     }
 
-    private void Knockout()
+    public void Knockout()
     {
         if (OnLizardKnockout != null)
             OnLizardKnockout(this);
@@ -105,7 +106,6 @@ public class Lizard : MonoBehaviour
     public void Orientate(Vector3 direction)
     {
         _facing = direction;
-        Debug.Log(_facing);
 
         Quaternion rot = Quaternion.LookRotation(_facing, Vector3.up);
         transform.rotation = rot;

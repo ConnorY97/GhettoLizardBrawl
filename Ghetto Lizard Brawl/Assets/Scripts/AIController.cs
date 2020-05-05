@@ -63,6 +63,7 @@ public class AIController : MonoBehaviour
 		if (_targetLizard != null)
 		{
 			_facing = (_targetLizard.transform.position - _src.transform.position).normalized;
+			_facing.y = _src.transform.position.y;
 			_src.Orientate(_facing);
 		}
 		else
@@ -115,6 +116,7 @@ public class AIController : MonoBehaviour
 				break;
 			case State.ATTACKING:
 				_targetLizard.Knockback(_facing);
+				Debug.Log(_facing);
 				_currentState = State.CHOOSETARGET;
 				break;
 			default:
