@@ -11,6 +11,7 @@ public class Hitbox : MonoBehaviour
     public void Initialise(string ownerTag)
     {
         _triggers = GetComponents<Collider>();
+        _ownerTag = ownerTag;
     }
 
     private void OnTriggerEnter(Collider other)

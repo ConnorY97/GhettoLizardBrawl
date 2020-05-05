@@ -36,7 +36,7 @@ public class PlayerInputController : MonoBehaviour
 		bufferedMovementDirection = movementInput.normalized;
 
 		if (Input.GetKeyDown(_attackButton))
-			_src.Attack();
+			_src.BeginAttack();
 	}
 
 	private void FixedUpdate()
