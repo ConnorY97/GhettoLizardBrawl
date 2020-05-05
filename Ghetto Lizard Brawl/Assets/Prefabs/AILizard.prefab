@@ -70,7 +70,7 @@ Transform:
   m_GameObject: {fileID: 4081161187341261110}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.3869, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6986749993635991674}
   - {fileID: 6835335547983513593}
@@ -191,6 +191,7 @@ MonoBehaviour:
   _maxSpeed: 8
   _timeToMaxSpeed: 2
   _weapon: {fileID: 0}
+  _knockbackData: {fileID: 0}
 --- !u!114 &5072422139398398941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,6 +207,7 @@ MonoBehaviour:
   chaseRadius: 4
   _currentState: 0
   _targetLizard: {fileID: 0}
+  attackRange: 0.05
 --- !u!1 &7539424053778085808
 GameObject:
   m_ObjectHideFlags: 0
