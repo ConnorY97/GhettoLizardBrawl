@@ -34,6 +34,11 @@ public class Lizard : MonoBehaviour
             _weapon.Initialise(this.tag);
     }
 
+    private void Update()
+    {
+        Orientate();
+    }
+
     public void Accelerate(Vector3 direction)
     {
         // vf = a*t equation to work out the acceleration given the time.
@@ -68,5 +73,26 @@ public class Lizard : MonoBehaviour
     {
         if (OnLizardKnockout != null)
             OnLizardKnockout(this);
+    }
+
+    private void Orientate()
+    {
+        Vector3 mousePosition = GetMousePosition();
+        mousePosition.y = transform.position.y;
+
+        Vector3 thisToMouse = (mousePosition - transform.position).normalized;
+
+        Quaternion rot = Quaternion.LookRotation(thisToMouse, Vector3.up);
+        transform.rotation = rot;
+    }
+
+    private Vector3 GetMousePosition()
+    {
+        Plane groundPlane = new Plane(Vector3.up, 0.0f);
+        Ray mouseRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        float d = 0f;
+        groundPlane.Raycast(mouseRay, out d);
+        return mouseRay.origin + mouseRay.direction * d;
     }
 }
