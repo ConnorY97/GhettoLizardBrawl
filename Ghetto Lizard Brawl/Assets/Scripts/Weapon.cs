@@ -36,5 +36,6 @@ public class Weapon : MonoBehaviour
     private void OnHitboxEnter(Lizard other)
     {
         other.Knockback(Vector3.right * _knockbackForce);
+        Debug.Log(other.name);
     }
 }

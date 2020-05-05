@@ -20,12 +20,18 @@ public class Lizard : MonoBehaviour
     public float MaxSpeed => _maxSpeed;
     [SerializeField] private float _maxSpeed;
     [SerializeField] private float _timeToMaxSpeed; // How long it takes to reach max speed.
-    
+
+    [SerializeField] private Weapon _weapon;
     private Rigidbody _rb;
+    private Animator _anim;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
+        _anim = GetComponent<Animator>();
+
+        if (_weapon != null)
+            _weapon.Initialise(this.tag);
     }
 
     public void Accelerate(Vector3 direction)
@@ -36,9 +42,21 @@ public class Lizard : MonoBehaviour
         _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _maxSpeed);
     }
 
-    public void Attack()
+    public void BeginAttack()
     {
+        if (_weapon != null)
+        {
+            _anim.SetTrigger("Attack");
+            _weapon.ToggleHitbox(true);
+        }
+    }
 
+    private void EndAttack()
+    {
+        if (_weapon != null)
+        {
+            _weapon.ToggleHitbox(false);
+        }
     }
 
     public void Knockback(Vector3 force)
