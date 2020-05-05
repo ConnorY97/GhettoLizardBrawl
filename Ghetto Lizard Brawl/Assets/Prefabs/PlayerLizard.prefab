@@ -178,7 +178,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxSpeed: 8
-  _timeToMaxSpeed: 1
+  _timeToMaxSpeed: 2
   _weapon: {fileID: 1520616533}
   _knockbackData: {fileID: 11400000, guid: 7f0de93101e875e45ae037dbd9c5494a, type: 2}
 --- !u!114 &7438224337014146195
