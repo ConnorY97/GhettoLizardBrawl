@@ -54,6 +54,17 @@ public class AIController : MonoBehaviour
 
 	public void Update()
 	{
+
+		if (_targetLizard != null)
+		{
+			Vector3 _facing = (_targetLizard.transform.position - _src.transform.position).normalized;
+			_src.Orientate(_facing);
+		}
+		else
+		{
+			_src.Orientate(Vector3.forward);
+		}
+
 		//If the target it outside the chase radius then the timer will increase 
 		if (_targetDistance > chaseRadius)
 		{
