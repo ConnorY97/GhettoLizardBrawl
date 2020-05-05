@@ -251,7 +251,7 @@ GameObject:
   - component: {fileID: 3515233193935198598}
   - component: {fileID: 3949487948440959527}
   m_Layer: 10
-  m_Name: PlayerLizard 1
+  m_Name: PlayerLizard
   m_TagString: AI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

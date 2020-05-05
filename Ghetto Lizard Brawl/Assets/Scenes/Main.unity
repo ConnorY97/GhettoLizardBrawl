@@ -131,6 +131,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6149207}
   - component: {fileID: 6149206}
+  - component: {fileID: 6149208}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -183,6 +184,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6149208
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6149205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42c4aaa13ba021e4dbb77a73edaeece7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quitButton: {fileID: 0}
+  replayButton: {fileID: 0}
 --- !u!1 &51291753
 GameObject:
   m_ObjectHideFlags: 0
@@ -419,7 +434,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 86276673}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6149208}
+        m_MethodName: Replay
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &86276673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5847,7 +5873,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 470979990}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6149208}
+        m_MethodName: Quit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &470979990
 MonoBehaviour:
   m_ObjectHideFlags: 0

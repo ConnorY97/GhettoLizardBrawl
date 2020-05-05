@@ -21,8 +21,6 @@ public enum State
 /// Date modified:	04/05/20
 /// </summary>
 
-[RequireComponent(typeof(Lizard))]
-
 public class AIController : MonoBehaviour
 {
 	//Components--------------------------------------
