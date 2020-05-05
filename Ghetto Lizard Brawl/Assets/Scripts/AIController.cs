@@ -13,19 +13,17 @@ public enum State
 
 /// <summary>
 /// Description:	Recieves input from AI to control the lizard
-/// Requirements:	Lizard, Nav mesh agent
+/// Requirements:	Lizard
 /// Author(s):		Connor Young, Reyhan Rishard
 /// Date created:	04/05/20
 /// Date modified:	04/05/20
 /// </summary>
 
 [RequireComponent(typeof(Lizard))]
-[RequireComponent(typeof(NavMeshAgent))]
 
 public class AIController : MonoBehaviour
 {
 	//Components--------------------------------------
-	private NavMeshAgent _ai = null;
 	private Lizard _src = null;
 	private GameManager _gameManager = null;
 
@@ -47,7 +45,6 @@ public class AIController : MonoBehaviour
 	public void Start()
 	{
 		//Assigning variables
-		_ai = GetComponent<NavMeshAgent>();
 		_src = GetComponent<Lizard>();
 		_gameManager = FindObjectOfType<GameManager>();
 		_currentState = State.CHOOSETARGET;
@@ -67,8 +64,9 @@ public class AIController : MonoBehaviour
 		switch (_currentState)
 		{
 			//Moving towards the AI target 
-			case State.MOVINGTOTARGET:				
-				_ai.SetDestination(_targetLizard.transform.position);
+			case State.MOVINGTOTARGET:
+				Vector3 direction = (_targetLizard.transform.position - this.transform.position).normalized;
+				_src.Accelerate(direction); 
 				//If the timer exceeds 4 seconds the AI will change target
 				if (_searchTimer > 4.0f)
 				{
