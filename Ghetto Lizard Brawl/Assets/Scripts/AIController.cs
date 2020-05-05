@@ -8,7 +8,8 @@ using System.Linq;
 public enum State
 {
 	MOVINGTOTARGET,
-	CHOOSETARGET
+	CHOOSETARGET, 
+	ATTACKING
 }
 
 /// <summary>
@@ -30,17 +31,18 @@ public class AIController : MonoBehaviour
 	//Target variables--------------------------------
 	private float _searchTimer = 0.0f;
 	private float _targetDistance = int.MaxValue;
-	
+
+	//Private variables------------------------------
+	Vector3 _facing = Vector3.forward; 
+
 	//Inspector Variables-----------------------------
 	public float chaseRadius;
-	[SerializeField]
-	private GameObject _visualChaseRadius;
-	[SerializeField]
-	private GameObject _visualSurpriseRadius;
 	[SerializeField]
 	private State _currentState;
 	[SerializeField]
 	private Lizard _targetLizard;
+	public float attackRange = 0.05f; 
+
 
 	public void Start()
 	{
@@ -48,12 +50,21 @@ public class AIController : MonoBehaviour
 		_src = GetComponent<Lizard>();
 		_gameManager = FindObjectOfType<GameManager>();
 		_currentState = State.CHOOSETARGET;
-		_visualChaseRadius.transform.localScale = new Vector2(chaseRadius, chaseRadius);
-		_visualSurpriseRadius.transform.localScale = new Vector2(chaseRadius * 0.5f, chaseRadius * 0.5f);
 	}
 
 	public void Update()
 	{
+		if (_targetLizard != null)
+		{
+			_facing = (_targetLizard.transform.position - _src.transform.position).normalized;
+			_facing.y = _src.transform.position.y;
+			_src.Orientate(_facing);
+		}
+		else
+		{
+			_src.Orientate(Vector3.forward);
+		}
+
 		//If the target it outside the chase radius then the timer will increase 
 		if (_targetDistance > chaseRadius)
 		{
@@ -85,10 +96,11 @@ public class AIController : MonoBehaviour
 								_targetLizard = currentLizard;
 								_searchTimer = 0.0f; 
 							}
-
 						}
 					}
 				}
+				if (_targetDistance < attackRange)
+					_currentState = State.ATTACKING;
 				break;
 			//Choosing a random target for the AI
 			case State.CHOOSETARGET:
@@ -96,9 +108,15 @@ public class AIController : MonoBehaviour
 				_searchTimer = 0.0f;
 				_currentState = State.MOVINGTOTARGET;
 				break;
+			case State.ATTACKING:
+				_targetLizard.Knockback(_facing);
+				Debug.Log(_facing);
+				_currentState = State.CHOOSETARGET;
+				break;
 			default:
 				break;
 		}
+		_targetDistance = Vector3.Distance(this.transform.position, _targetLizard.transform.position); 
 	}
 
 	/// <summary>
@@ -107,7 +125,7 @@ public class AIController : MonoBehaviour
 	/// <returns></returns>
 	Lizard FindRandomLizard()
 	{		
-		int randomIndex = Random.Range(0, 3);
+		int randomIndex = Random.Range(0, 4);
 		//Creates a list of lizards excluding the one this script is attached to 
 		Lizard temp = _gameManager.completeList.Where(ai => ai != _src).ToList()[randomIndex];
 		return temp; 
