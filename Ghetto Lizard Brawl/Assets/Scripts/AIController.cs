@@ -7,8 +7,10 @@ using System.Linq;
 //Enums must be defined before anything else in the class 
 public enum State
 {
+	IDLE,
 	MOVINGTOTARGET,
-	CHOOSETARGET
+	CHOOSETARGET, 
+	ATTACKING
 }
 
 /// <summary>
@@ -30,17 +32,22 @@ public class AIController : MonoBehaviour
 	//Target variables--------------------------------
 	private float _searchTimer = 0.0f;
 	private float _targetDistance = int.MaxValue;
-	
+
+	//Private variables------------------------------
+	Vector3 _facing = Vector3.forward; 
+
 	//Inspector Variables-----------------------------
 	public float chaseRadius;
-	[SerializeField]
-	private GameObject _visualChaseRadius;
-	[SerializeField]
-	private GameObject _visualSurpriseRadius;
 	[SerializeField]
 	private State _currentState;
 	[SerializeField]
 	private Lizard _targetLizard;
+	public float attackRange = 0.05f; 
+
+	[SerializeField] private KnockbackData _targetedKnockbackData;
+	[SerializeField] private KnockbackData _targetlessKnockbackData;
+
+	[SerializeField] private Hitbox _hitbox;
 
 	public void Start()
 	{
@@ -48,21 +55,55 @@ public class AIController : MonoBehaviour
 		_src = GetComponent<Lizard>();
 		_gameManager = FindObjectOfType<GameManager>();
 		_currentState = State.CHOOSETARGET;
-		_visualChaseRadius.transform.localScale = new Vector2(chaseRadius, chaseRadius);
-		_visualSurpriseRadius.transform.localScale = new Vector2(chaseRadius * 0.5f, chaseRadius * 0.5f);
+		_hitbox.Initialise(_src);
+		_hitbox.ToggleTriggers(true);
+	}
+
+	private void OnEnable()
+	{
+		_hitbox.OnHitboxEnter += OnHitboxEnter;
+	}
+
+	private void OnDisable()
+	{
+		_hitbox.OnHitboxEnter -= OnHitboxEnter;
 	}
 
 	public void Update()
 	{
+		if (_targetLizard != null)
+		{
+			_facing = (_targetLizard.transform.position - _src.transform.position).normalized;
+			_facing.y = _src.transform.position.y;
+			_src.Orientate(_facing);
+		}
+		else
+		{
+			_src.Orientate(Vector3.forward);
+		}
+
 		//If the target it outside the chase radius then the timer will increase 
 		if (_targetDistance > chaseRadius)
 		{
 			_searchTimer += Time.deltaTime; 
 		}
 
+		if (_targetLizard == null)
+		{
+			_currentState = State.CHOOSETARGET;
+		}
+
 		//State machine for the AI 
 		switch (_currentState)
 		{
+			case State.IDLE:
+			_src.Stop();
+
+			_targetLizard = FindRandomLizard();
+
+			if (_targetLizard != null)
+				_currentState = State.MOVINGTOTARGET;
+			break;
 			//Moving towards the AI target 
 			case State.MOVINGTOTARGET:
 				Vector3 direction = (_targetLizard.transform.position - this.transform.position).normalized;
@@ -85,16 +126,26 @@ public class AIController : MonoBehaviour
 								_targetLizard = currentLizard;
 								_searchTimer = 0.0f; 
 							}
-
 						}
 					}
 				}
+				_targetDistance = Vector3.Distance(this.transform.position, _targetLizard.transform.position); 
+				if (_targetDistance < attackRange)
+					_currentState = State.ATTACKING;
 				break;
 			//Choosing a random target for the AI
 			case State.CHOOSETARGET:
 				_targetLizard = FindRandomLizard();
 				_searchTimer = 0.0f;
-				_currentState = State.MOVINGTOTARGET;
+
+				if (_targetLizard == null)
+					_currentState = State.IDLE;
+				else
+					_currentState = State.MOVINGTOTARGET;
+				break;
+			case State.ATTACKING:
+				_targetLizard.Knockback(_facing, _targetedKnockbackData);
+				_currentState = State.CHOOSETARGET;
 				break;
 			default:
 				break;
@@ -107,10 +158,19 @@ public class AIController : MonoBehaviour
 	/// <returns></returns>
 	Lizard FindRandomLizard()
 	{		
-		int randomIndex = Random.Range(0, 3);
+		if (_gameManager.completeList.Count - 1 <= 0)
+			return null;
+
+		int randomIndex = Random.Range(0, _gameManager.completeList.Count - 1);
 		//Creates a list of lizards excluding the one this script is attached to 
 		Lizard temp = _gameManager.completeList.Where(ai => ai != _src).ToList()[randomIndex];
 		return temp; 
+	}
+
+	private void OnHitboxEnter(Lizard other)
+	{
+		Vector3 direction = (other.transform.position - transform.position).normalized;
+		other.Knockback(direction, _targetlessKnockbackData);
 	}
 }
 
