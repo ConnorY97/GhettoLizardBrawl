@@ -16,8 +16,7 @@ public class GameManager : MonoBehaviour
 
 	//Inspector Variables--------------------------------------
 	[Header("Lizard list")]
-	[SerializeField]
-	private List<Lizard> _completeList;
+	public List<Lizard> completeList;
 
 	[Header("Spawn points")]
 	public List<Transform> spawnPoints;
@@ -37,8 +36,8 @@ public class GameManager : MonoBehaviour
 
 		_player = Instantiate(playerControlledLizard, spawnPoints[4].position, Quaternion.identity);
 
-		_completeList = new List<Lizard>(_aiList);
-		_completeList.Add(_player); 
+		completeList = new List<Lizard>(_aiList);
+		completeList.Add(_player); 
 	}
 
 	// Update is called once per frame
