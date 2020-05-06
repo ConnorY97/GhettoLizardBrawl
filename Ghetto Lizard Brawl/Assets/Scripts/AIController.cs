@@ -125,7 +125,7 @@ public class AIController : MonoBehaviour
 						if (Vector3.Distance(this.transform.position, currentLizard.transform.position) < chaseRadius * 0.5f)
 						{
 							int randomNumber = Random.Range(1, 10);
-							if (randomNumber <= 6)
+							if (randomNumber <= 4)
 							{
 								_targetLizard = currentLizard;
 								_searchTimer = 0.0f; 
