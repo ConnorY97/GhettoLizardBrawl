@@ -32,6 +32,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AILizard Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4291054200942179831, guid: 148da79efb313de40b0eb7358cb9ebcf,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c788a2d91b1852046993d70d83b1cb66, type: 2}
     - target: {fileID: 4600779640392983657, guid: 148da79efb313de40b0eb7358cb9ebcf,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -87,6 +92,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7323745551879138597, guid: 148da79efb313de40b0eb7358cb9ebcf,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 96c7e0ad019a5124da38981049d7fd20, type: 2}
     - target: {fileID: 7856687278761228467, guid: 148da79efb313de40b0eb7358cb9ebcf,
         type: 3}
       propertyPath: m_Materials.Array.data[0]
