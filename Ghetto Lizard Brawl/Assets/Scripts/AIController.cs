@@ -10,7 +10,8 @@ public enum State
 	IDLE,
 	MOVINGTOTARGET,
 	CHOOSETARGET, 
-	ATTACKING
+	ATTACKING,
+	WANDER
 }
 
 /// <summary>
@@ -29,11 +30,13 @@ public class AIController : MonoBehaviour
 
 	//Target variables--------------------------------
 	private float _searchTimer = 0.0f;
-	private float _attackTimer = 0.0f; 
+	private float _attackTime = 0.0f;
+	private float _wanderTime = 0.0f;
 	private float _targetDistance = int.MaxValue;
 
 	//Private variables------------------------------
-	Vector3 _facing = Vector3.forward; 
+	Vector3 _facing = Vector3.forward;
+	Vector3 wanderPoint = Vector3.forward; 
 
 	//Inspector Variables-----------------------------
 	public float chaseRadius;
@@ -41,13 +44,14 @@ public class AIController : MonoBehaviour
 	private State _currentState;
 	[SerializeField]
 	private Lizard _targetLizard;
-	public float attackRange = 0.05f; 
-
+	public float attackRange = 0.05f;
+	public Transform circleCentre; 
 	[SerializeField] private KnockbackData _targetedKnockbackData;
 	[SerializeField] private KnockbackData _targetlessKnockbackData;
 
 	[SerializeField] private Hitbox _hitbox;
-	public float attackPause = 1.0f; 
+	public float attackPause = 1.0f;
+	public float wanderDuration = 0.05f; 
 
 	public void Start()
 	{
@@ -71,7 +75,6 @@ public class AIController : MonoBehaviour
 
 	public void Update()
 	{
-		_attackTimer += Time.deltaTime; 
 		if (_targetLizard != null)
 		{
 			_facing = (_targetLizard.transform.position - _src.transform.position).normalized;
@@ -133,8 +136,9 @@ public class AIController : MonoBehaviour
 				_targetDistance = Vector3.Distance(this.transform.position, _targetLizard.transform.position); 
 				if (_targetDistance < attackRange)
 				{
-					_attackTimer = 0.0f;
-					_currentState = State.ATTACKING;
+					if (Time.time > _attackTime + attackPause)
+						_currentState = State.ATTACKING;
+					
 				}
 				break;
 			//Choosing a random target for the AI
@@ -148,11 +152,22 @@ public class AIController : MonoBehaviour
 					_currentState = State.MOVINGTOTARGET;
 				break;
 			case State.ATTACKING:
-				if (_attackTimer >= attackPause)
+				_attackTime = Time.time; 
+				_targetLizard.Knockback(_facing, _targetedKnockbackData);
+				_currentState = State.WANDER;
+				wanderPoint = Random.insideUnitSphere + _gameManager.circleCentre.position;
+				wanderPoint.y = 0;
+				_wanderTime = Time.time; 
+				break;
+			case State.WANDER:
+				Vector3 wanderDirection = (wanderPoint - this.transform.position).normalized;
+				_src.Accelerate(wanderDirection);
+				_facing = wanderDirection;
+				_src.Orientate(_facing); 
+				if (Time.time > _wanderTime + wanderDuration || Vector3.Distance(this.transform.position, wanderPoint) < 0.25)
 				{
-					_targetLizard.Knockback(_facing, _targetedKnockbackData);
-					_currentState = State.CHOOSETARGET;
-				}				
+					_currentState = State.CHOOSETARGET; 
+				}
 				break;
 			default:
 				break;

@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private TMP_Text _gameoverTextMeshPro;
 	[SerializeField] private string _gameoverSuffix;
 	[SerializeField] private string _gameoverPrefix;
+	public Transform circleCentre; 
 
 	//[SerializeField] private RectTransform _livesCounterParent;
 	[SerializeField] private GameObject[] _lifeCounts;
