@@ -32,7 +32,6 @@ public class Lizard : MonoBehaviour
     private float _knockbackTime;
 
     private Rigidbody _rb;
-    private Animator _playerAnim;
     [SerializeField] private Animator _meshAnim;
     [SerializeField] private Transform _anchor;
 
@@ -41,7 +40,6 @@ public class Lizard : MonoBehaviour
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _playerAnim = GetComponent<Animator>();
 
         if (_weapon != null)
             _weapon.Initialise(this);
@@ -52,7 +50,8 @@ public class Lizard : MonoBehaviour
         if (_knockbackBuffered)
             LerpKnockback();
 
-        _meshAnim.SetFloat("Speed", _rb.velocity.magnitude);
+        _meshAnim.SetBool("Moving", _rb.velocity.magnitude > 0.15f);
+        Debug.Log(_rb.velocity.magnitude);
     }
 
     private void OnEnable()
@@ -83,11 +82,18 @@ public class Lizard : MonoBehaviour
         _rb.velocity = Vector3.zero;
     }
 
+    public void Attack()
+    {
+        if (_weapon != null)
+        {
+            _meshAnim.SetTrigger("Attack");
+        }
+    }
+
     public void BeginAttack()
     {
         if (_weapon != null)
         {
-            _playerAnim.SetTrigger("Attack");
             _weapon.SetDirection(_facing);
             _weapon.ToggleHitbox(true);
         }
@@ -103,7 +109,7 @@ public class Lizard : MonoBehaviour
         SoundManager.instance.PlayCheersOneshot();
     }
 
-    private void EndAttack()
+    public void EndAttack()
     {
         if (_weapon != null)
         {
