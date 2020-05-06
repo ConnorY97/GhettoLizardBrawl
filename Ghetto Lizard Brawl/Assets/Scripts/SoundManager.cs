@@ -5,6 +5,7 @@ using UnityEngine;
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
+    [SerializeField] private float _slashesVolume;
     [SerializeField] private float _coinsVolume;
     [SerializeField] private float _cheersVolume;
     [SerializeField] private float _selectionVolume;
@@ -12,6 +13,7 @@ public class SoundManager : MonoBehaviour
 
 
     [SerializeField] private AudioSource _src;
+    [SerializeField] private AudioClip[] _slashes;
     [SerializeField] private AudioClip[] _coins;
     [SerializeField] private AudioClip[] _cheers;
     [SerializeField] private AudioClip[] _selection;
@@ -21,6 +23,11 @@ public class SoundManager : MonoBehaviour
         instance = this;
     }
 
+    public void PlaySlashOneshot()
+    {
+        _src.PlayOneShot(_slashes[Random.Range(0, _slashes.Length)], _slashesVolume);
+    }
+
     public void PlayCoinsOneshot()
     {
         _src.PlayOneShot(_coins[Random.Range(0, _coins.Length)], _coinsVolume);
@@ -28,7 +35,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlayCheersOneshot()
     {
-        //_src.PlayOneShot(_cheers[Random.Range(0, _cheers.Length)], _cheersVolume);
+        _src.PlayOneShot(_cheers[Random.Range(0, _cheers.Length)], _cheersVolume);
     }
 
     public void PlaySelectionOneshot()

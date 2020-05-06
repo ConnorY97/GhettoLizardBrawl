@@ -53,6 +53,18 @@ public class Lizard : MonoBehaviour
         _meshAnim.SetFloat("Speed", _rb.velocity.magnitude);
     }
 
+    private void OnEnable()
+    {
+        if (_weapon != null)
+            _weapon.OnWeaponHit += OnWeaponHit;
+    }
+
+    private void OnDisable()
+    {
+        if (_weapon != null)
+            _weapon.OnWeaponHit -= OnWeaponHit;
+    }
+
     public void Accelerate(Vector3 direction)
     {
         // vf = a*t equation to work out the acceleration given the time.
@@ -74,6 +86,16 @@ public class Lizard : MonoBehaviour
             _weapon.SetDirection(_facing);
             _weapon.ToggleHitbox(true);
         }
+    }
+
+    public void PlayAttackSound()
+    {
+        SoundManager.instance.PlaySlashOneshot();
+    }
+
+    private void OnWeaponHit(Lizard other)
+    {
+        SoundManager.instance.PlayCheersOneshot();
     }
 
     private void EndAttack()
@@ -105,8 +127,6 @@ public class Lizard : MonoBehaviour
         
         //_rb.AddForce(force, ForceMode.Impulse);
         //gameObject.SetActive(false);
-
-        SoundManager.instance.PlayCheersOneshot();
     }
 
     public void Knockout()
