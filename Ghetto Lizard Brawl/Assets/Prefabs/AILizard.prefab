@@ -154,6 +154,8 @@ MonoBehaviour:
   _targetlessKnockbackData: {fileID: 11400000, guid: 367ae67e7ba837e4abafaf6b1b4d29df,
     type: 2}
   _hitbox: {fileID: 1077179449619660976}
+  attackPause: 1
+  wanderDuration: 2
 --- !u!1 &4380269427129092091
 GameObject:
   m_ObjectHideFlags: 0

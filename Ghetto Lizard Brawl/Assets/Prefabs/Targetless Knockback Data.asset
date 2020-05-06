@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a1acb2256d155846999d3038fec2dd7, type: 3}
   m_Name: Targetless Knockback Data
   m_EditorClassIdentifier: 
-  distance: 0.45
-  duration: 0.3
+  distance: 0.15
+  duration: 0.1
