@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
 		//_player = Instantiate(playerControlledLizard, spawnPoints[4].position + Vector3.up * (playerControlledLizard.transform.localScale.y), Quaternion.identity);
 		_player = SpawnLizard(playerControlledLizard, playerSpawnPoint.position, false);
 		//completeList.Add(_player); 
+		Time.timeScale = 1;
 	}
 
 	void OnEnable()

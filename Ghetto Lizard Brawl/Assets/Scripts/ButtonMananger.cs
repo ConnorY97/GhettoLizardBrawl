@@ -14,11 +14,7 @@ using UnityEngine.SceneManagement;
 
 public class ButtonMananger : MonoBehaviour
 {
-    //Inspector variables---------------------------
-    public Button quitButton;
-    public Button replayButton;
-
-    // Start is called before the first frame update
+   // Start is called before the first frame update
     void Start()
     {
         Time.timeScale = 1; 
@@ -36,6 +32,11 @@ public class ButtonMananger : MonoBehaviour
     }
 
     public void Replay()
+    {
+        SceneManager.LoadScene(1); 
+    }
+
+    public void Play()
     {
         SceneManager.LoadScene(1); 
     }

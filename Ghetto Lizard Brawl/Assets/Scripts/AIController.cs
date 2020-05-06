@@ -18,7 +18,7 @@ public enum State
 /// Requirements:	Lizard
 /// Author(s):		Connor Young, Reyhan Rishard
 /// Date created:	04/05/20
-/// Date modified:	04/05/20
+/// Date modified:	06/05/20
 /// </summary>
 
 public class AIController : MonoBehaviour
@@ -29,6 +29,7 @@ public class AIController : MonoBehaviour
 
 	//Target variables--------------------------------
 	private float _searchTimer = 0.0f;
+	private float _attackTimer = 0.0f; 
 	private float _targetDistance = int.MaxValue;
 
 	//Private variables------------------------------
@@ -46,6 +47,7 @@ public class AIController : MonoBehaviour
 	[SerializeField] private KnockbackData _targetlessKnockbackData;
 
 	[SerializeField] private Hitbox _hitbox;
+	public float attackPause = 1.0f; 
 
 	public void Start()
 	{
@@ -69,6 +71,7 @@ public class AIController : MonoBehaviour
 
 	public void Update()
 	{
+		_attackTimer += Time.deltaTime; 
 		if (_targetLizard != null)
 		{
 			_facing = (_targetLizard.transform.position - _src.transform.position).normalized;
@@ -129,7 +132,10 @@ public class AIController : MonoBehaviour
 				}
 				_targetDistance = Vector3.Distance(this.transform.position, _targetLizard.transform.position); 
 				if (_targetDistance < attackRange)
+				{
+					_attackTimer = 0.0f;
 					_currentState = State.ATTACKING;
+				}
 				break;
 			//Choosing a random target for the AI
 			case State.CHOOSETARGET:
@@ -142,8 +148,11 @@ public class AIController : MonoBehaviour
 					_currentState = State.MOVINGTOTARGET;
 				break;
 			case State.ATTACKING:
-				_targetLizard.Knockback(_facing, _targetedKnockbackData);
-				_currentState = State.CHOOSETARGET;
+				if (_attackTimer >= attackPause)
+				{
+					_targetLizard.Knockback(_facing, _targetedKnockbackData);
+					_currentState = State.CHOOSETARGET;
+				}				
 				break;
 			default:
 				break;
