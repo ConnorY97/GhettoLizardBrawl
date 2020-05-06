@@ -104,7 +104,8 @@ public class GameManager : MonoBehaviour
 		{
 			_playerLives--;
 
-			_lifeCounts[_playerLives].SetActive(false);
+			//_lifeCounts[_playerLives].SetActive(false);
+			_lifeCounts[_playerLives].GetComponent<Animator>().SetBool("Active", false); 
 
 			if (_playerLives == 0)
 			{
