@@ -36,6 +36,8 @@ public class Lizard : MonoBehaviour
     [SerializeField] private Animator _meshAnim;
     [SerializeField] private Transform _anchor;
 
+    private bool _forcesEnabled = true;
+
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
@@ -67,10 +69,13 @@ public class Lizard : MonoBehaviour
 
     public void Accelerate(Vector3 direction)
     {
-        // vf = a*t equation to work out the acceleration given the time.
-        Vector3 acceleration = direction * (_maxSpeed / _timeToMaxSpeed);
-        _rb.AddForce(acceleration, ForceMode.Impulse);
-        _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _maxSpeed);
+        if (_forcesEnabled)
+        {
+            // vf = a*t equation to work out the acceleration given the time.
+            Vector3 acceleration = direction * (_maxSpeed / _timeToMaxSpeed);
+            _rb.AddForce(acceleration, ForceMode.Impulse);
+            _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _maxSpeed);
+        }
     }
 
     public void Stop()
@@ -113,7 +118,10 @@ public class Lizard : MonoBehaviour
         transform.position = Vector3.Lerp(_initKnockbackPosition, _finalKnockbackPosition, t);
 
         if (t >= 1.0f)
+        {
             _knockbackBuffered = false;
+            _forcesEnabled = true;
+        }
     }
 
     public void Knockback(Vector3 direction, KnockbackData data)
@@ -124,6 +132,8 @@ public class Lizard : MonoBehaviour
         _currentKnockbackDuration = data.duration;
         _knockbackTime = Time.time;
         _knockbackBuffered = true;
+        _forcesEnabled = false;
+        Stop();
         
         //_rb.AddForce(force, ForceMode.Impulse);
         //gameObject.SetActive(false);
