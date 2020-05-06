@@ -37,6 +37,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] private string _gameoverSuffix;
 	[SerializeField] private string _gameoverPrefix;
 
+	//[SerializeField] private RectTransform _livesCounterParent;
+	[SerializeField] private GameObject[] _lifeCounts;
 
 	// Start is called before the first frame update
 	void Start()
@@ -56,6 +58,11 @@ public class GameManager : MonoBehaviour
 		//_player = Instantiate(playerControlledLizard, spawnPoints[4].position + Vector3.up * (playerControlledLizard.transform.localScale.y), Quaternion.identity);
 		_player = SpawnLizard(playerControlledLizard, playerSpawnPoint.position, false);
 		//completeList.Add(_player); 
+
+		for (int i = 0; i < _playerLives; i++)
+		{
+			_lifeCounts[i].SetActive(true);
+		}
 	}
 
 	void OnEnable()
@@ -92,6 +99,8 @@ public class GameManager : MonoBehaviour
 		if (isPlayer)
 		{
 			_playerLives--;
+
+			_lifeCounts[_playerLives].SetActive(false);
 
 			if (_playerLives == 0)
 			{
