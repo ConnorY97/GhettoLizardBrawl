@@ -10,13 +10,16 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] private float _knockbackForce;
+    public delegate void WeaponEventHandler(Lizard other);
+    public event WeaponEventHandler OnWeaponHit;
+
+    [SerializeField] private KnockbackData _knockbackData;
     [SerializeField] private Hitbox _hitbox;
     private Vector3 _direction;
 
-    public void Initialise(string ownerTag)
+    public void Initialise(Lizard owner)
     {
-        _hitbox.Initialise(ownerTag);
+        _hitbox.Initialise(owner);
         ToggleHitbox(false);
     }
 
@@ -42,7 +45,11 @@ public class Weapon : MonoBehaviour
 
     private void OnHitboxEnter(Lizard other)
     {
-        other.Knockback(_direction);
+        other.Knockback(_direction, _knockbackData);
+
+        if (OnWeaponHit != null)
+            OnWeaponHit(other);
+        
         Debug.Log(other.name);
     }
 }

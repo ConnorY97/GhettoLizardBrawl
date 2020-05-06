@@ -25,28 +25,44 @@ public class Lizard : MonoBehaviour
     private Vector3 _facing;
 
     // Knockback.
-    [SerializeField] private KnockbackData _knockbackData;
     private Vector3 _finalKnockbackPosition;
     private Vector3 _initKnockbackPosition;
     private bool _knockbackBuffered = false;
+    private float _currentKnockbackDuration;
     private float _knockbackTime;
 
     private Rigidbody _rb;
-    private Animator _anim;
+    private Animator _playerAnim;
+    [SerializeField] private Animator _meshAnim;
+    [SerializeField] private Transform _anchor;
 
     private void Awake()
     {
         _rb = GetComponent<Rigidbody>();
-        _anim = GetComponent<Animator>();
+        _playerAnim = GetComponent<Animator>();
 
         if (_weapon != null)
-            _weapon.Initialise(this.tag);
+            _weapon.Initialise(this);
     }
 
     private void Update()
     {
         if (_knockbackBuffered)
             LerpKnockback();
+
+        _meshAnim.SetFloat("Speed", _rb.velocity.magnitude);
+    }
+
+    private void OnEnable()
+    {
+        if (_weapon != null)
+            _weapon.OnWeaponHit += OnWeaponHit;
+    }
+
+    private void OnDisable()
+    {
+        if (_weapon != null)
+            _weapon.OnWeaponHit -= OnWeaponHit;
     }
 
     public void Accelerate(Vector3 direction)
@@ -57,14 +73,29 @@ public class Lizard : MonoBehaviour
         _rb.velocity = Vector3.ClampMagnitude(_rb.velocity, _maxSpeed);
     }
 
+    public void Stop()
+    {
+        _rb.velocity = Vector3.zero;
+    }
+
     public void BeginAttack()
     {
         if (_weapon != null)
         {
-            _anim.SetTrigger("Attack");
+            _playerAnim.SetTrigger("Attack");
             _weapon.SetDirection(_facing);
             _weapon.ToggleHitbox(true);
         }
+    }
+
+    public void PlayAttackSound()
+    {
+        SoundManager.instance.PlaySlashOneshot();
+    }
+
+    private void OnWeaponHit(Lizard other)
+    {
+        SoundManager.instance.PlayCheersOneshot();
     }
 
     private void EndAttack()
@@ -78,18 +109,19 @@ public class Lizard : MonoBehaviour
     private void LerpKnockback()
     {
         float elapsedTime = Time.time - _knockbackTime;
-        float t = elapsedTime / _knockbackData.duration;
+        float t = elapsedTime / _currentKnockbackDuration;
         transform.position = Vector3.Lerp(_initKnockbackPosition, _finalKnockbackPosition, t);
 
         if (t >= 1.0f)
             _knockbackBuffered = false;
     }
 
-    public void Knockback(Vector3 direction)
+    public void Knockback(Vector3 direction, KnockbackData data)
     {
         direction.y = 0f;
         _initKnockbackPosition = transform.position;
-        _finalKnockbackPosition = _initKnockbackPosition + direction * _knockbackData.distance;
+        _finalKnockbackPosition = _initKnockbackPosition + direction * data.distance;
+        _currentKnockbackDuration = data.duration;
         _knockbackTime = Time.time;
         _knockbackBuffered = true;
         
@@ -99,6 +131,8 @@ public class Lizard : MonoBehaviour
 
     public void Knockout()
     {
+		SoundManager.instance.PlayCoinsOneshot();
+
         if (OnLizardKnockout != null)
             OnLizardKnockout(this);
     }
@@ -108,6 +142,6 @@ public class Lizard : MonoBehaviour
         _facing = direction;
 
         Quaternion rot = Quaternion.LookRotation(_facing, Vector3.up);
-        transform.rotation = rot;
+        _anchor.rotation = rot;
     }
 }
