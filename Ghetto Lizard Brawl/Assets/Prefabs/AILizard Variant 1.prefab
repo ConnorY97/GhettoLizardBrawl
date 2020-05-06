@@ -7,6 +7,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1159838263157868730, guid: 07bc985c6c96f0a41920d3e231399869,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: a980eead50af66e418bd1f524b27df2b, type: 2}
     - target: {fileID: 4812479938834977888, guid: 07bc985c6c96f0a41920d3e231399869,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -67,6 +72,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AILizard Variant 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5636072449527189608, guid: 07bc985c6c96f0a41920d3e231399869,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 159d2760d85214340b1aa0dcfce0f54b, type: 2}
     - target: {fileID: 7051681232419650532, guid: 07bc985c6c96f0a41920d3e231399869,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

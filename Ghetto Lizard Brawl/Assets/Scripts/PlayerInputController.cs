@@ -36,7 +36,7 @@ public class PlayerInputController : MonoBehaviour
 		_bufferedMovementDirection = movementInput.normalized;
 
 		if (Input.GetKeyDown(_attackButton))
-			_src.BeginAttack();
+			_src.Attack();
 
 		_mousePosition = GetMousePosition();
         _mousePosition.y = _src.transform.position.y;
