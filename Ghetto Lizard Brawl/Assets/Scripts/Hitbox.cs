@@ -5,21 +5,25 @@ public class Hitbox : MonoBehaviour
     public delegate void HitboxEventHandler(Lizard other);
     public event HitboxEventHandler OnHitboxEnter;
 
-    private string _ownerTag;
+    private Lizard _owner;
     private Collider[] _triggers;
 
-    public void Initialise(string ownerTag)
+    public void Initialise(Lizard owner)
     {
         _triggers = GetComponents<Collider>();
-        _ownerTag = ownerTag;
+        _owner = owner;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (OnHitboxEnter != null)
         {
-            if (!other.CompareTag(_ownerTag))
-                OnHitboxEnter(other.GetComponent<Lizard>());
+            Lizard otherLizard = other.GetComponentInParent<Lizard>();
+
+            if (otherLizard == _owner && otherLizard == null)
+                return;
+
+            OnHitboxEnter(otherLizard);
         }
     }
 
