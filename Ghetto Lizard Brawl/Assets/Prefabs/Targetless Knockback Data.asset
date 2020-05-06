@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Targetless Knockback Data
   m_EditorClassIdentifier: 
   distance: 0.15
-  duration: 0.1
+  duration: 0.15

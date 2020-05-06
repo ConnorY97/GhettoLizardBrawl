@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Targeted Knockback Data
   m_EditorClassIdentifier: 
   distance: 0.5
-  duration: 0.1
+  duration: 0.15

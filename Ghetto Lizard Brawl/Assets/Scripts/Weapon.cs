@@ -50,6 +50,5 @@ public class Weapon : MonoBehaviour
         if (OnWeaponHit != null)
             OnWeaponHit(other);
         
-        Debug.Log(other.name);
     }
 }

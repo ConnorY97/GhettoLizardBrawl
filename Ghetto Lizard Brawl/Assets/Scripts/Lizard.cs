@@ -51,7 +51,6 @@ public class Lizard : MonoBehaviour
             LerpKnockback();
 
         _meshAnim.SetBool("Moving", _rb.velocity.magnitude > 0.15f);
-        Debug.Log(_rb.velocity.magnitude);
     }
 
     private void OnEnable()
