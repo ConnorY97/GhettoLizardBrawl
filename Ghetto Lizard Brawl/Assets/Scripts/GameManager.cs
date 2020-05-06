@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
 	private List<Lizard> _aiList = new List<Lizard>();
 	private Lizard _player;
 
+	private bool isGameOver = false; 
+
 	//Inspector Variables--------------------------------------
 	[Header("Lizard list")]
 	public List<Lizard> completeList;
@@ -63,6 +65,7 @@ public class GameManager : MonoBehaviour
 		{
 			_lifeCounts[i].SetActive(true);
 		}
+		Time.timeScale = 1;
 	}
 
 	void OnEnable()
@@ -107,6 +110,7 @@ public class GameManager : MonoBehaviour
 				// CONNOR SHOW GAMEOVER SCREEN HERE AND DISPLAY _aiKnockouts on it.
 				Debug.Log("GAME OVERR!");
 				Gameover();
+				isGameOver = true; 
 			}
 		}
 		else
@@ -119,7 +123,7 @@ public class GameManager : MonoBehaviour
 
 		if (!isPlayer)
 			StartCoroutine(SpawnCo(aiControlledLizards[team], aiSpawnPoints[team].position, true, team));
-		else
+		else if (!isGameOver && isPlayer)
 			StartCoroutine(SpawnCo(playerControlledLizard, playerSpawnPoint.position, false, -1));	
 	}
 
